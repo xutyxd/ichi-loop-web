@@ -1,0 +1,15 @@
+<aside class="sessions">
+    <section class="sessions_header">
+        <h1>{{ 'Sessions' | uppercase }}</h1>
+    </section>
+    <section>
+        <button app-button outlined (click)="add()">+ ADD SESSION</button>
+    </section>
+    <section>
+        @for (session of sessions(); track $index) {
+            <div class="session" (click)="select(session)" (keyup.enter)="select(session)">
+                <h2>{{ session.title | uppercase}}</h2>
+            </div>
+        }
+    </section>
+</aside>

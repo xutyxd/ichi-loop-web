@@ -1,0 +1,15 @@
+
+:host {
+    display: block;
+    width: calc(100% - var(--default-size) * 3 * 2 - 2px);
+    padding: calc(var(--default-size) * 2) calc(var(--default-size) * 3);
+    border: 1px solid var(--border-secondary);
+    border-radius: calc(var(--border-radius) / 2);
+    color: var(--text-primary);
+    font-size: 14px;
+
+    &:focus {
+        outline-color:  color-mix(in oklab, var(--accent) 50%, transparent);;
+        border-color: var(--accent);
+    }
+}

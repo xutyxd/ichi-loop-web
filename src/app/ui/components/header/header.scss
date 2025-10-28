@@ -1,0 +1,10 @@
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--header-height);
+    padding: var(--padding);
+    background-color: ligth-dark(var(--bg-secondary), var(--bg-secondary-dark));
+    outline: 2px solid light-dark(var(--border-secondary), var(--border-secondary-dark));
+}

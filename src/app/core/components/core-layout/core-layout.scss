@@ -1,0 +1,22 @@
+.layout {
+    height: 100vh;
+
+    &__content {
+        display: flex;
+        height: calc(100vh - var(--header-height) - var(--padding) * 2);
+    }
+
+    &__sessions {
+        width: 200px;
+        height: 100%;
+        background-color: var(--bg-secondary);
+        border-right: 1px solid var(--border-secondary);
+    }
+
+    &__session {
+        flex: 1;
+        height: 100%;
+        background-color: var(--bg-primary);
+        border-left: 1px solid var(--border-secondary);
+    }
+}

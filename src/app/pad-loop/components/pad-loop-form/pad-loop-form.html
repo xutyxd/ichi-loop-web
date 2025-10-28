@@ -1,0 +1,40 @@
+<section [formGroup]="padLoopForm" class="pad-loop-form">
+    <section class="pad-loop-form__general">
+        <app-input-form>
+            <label>Title</label>
+            <input app-input type="text" formControlName="title">
+        </app-input-form>
+        <app-input-form formGroupName="time">
+            <label>Start</label>
+            <input app-input type="text" formControlName="start">
+        </app-input-form>
+        <app-input-form formGroupName="time">
+            <label>End</label>
+            <input app-input type="text" formControlName="end">
+        </app-input-form>
+    </section>
+
+    <section>
+        <app-input-form>
+            <label>Youtube URL</label>
+            <input app-input type="text" formControlName="youtubeUrl">
+        </app-input-form>
+    </section>
+    <section class="pad-loop-form__player-container">
+        <div class="pad-loop-form__player">
+            @if(videoId) {
+                <app-youtube-player [videoId]="videoId"></app-youtube-player>
+            }
+            
+        </div>
+        <div class="pad-loop-form__controls">
+            <label>Quick controls</label>
+            <button app-button outlined>Jump to start</button>
+            <button app-button outlined>Jump to end</button>
+        </div>
+    </section>
+    <section class="pad-loop-form__footer">
+        <button app-button (click)="cancel()">Cancel</button>
+        <button app-button filled [disabled]="padLoopForm.valid ? null : true" (click)="save()">Save</button>
+    </section>
+</section>

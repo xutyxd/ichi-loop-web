@@ -1,0 +1,15 @@
+
+dialog {
+    border: 1px solid var(--border-primary);
+    border-radius: var(--border-radius);
+    padding: 0;
+}
+
+.dialog {
+    padding: var(--padding);
+    min-width: calc(var(--default-size) * 70);
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+}

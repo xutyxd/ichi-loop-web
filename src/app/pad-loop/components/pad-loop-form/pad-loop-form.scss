@@ -1,0 +1,36 @@
+
+.pad-loop-form {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--gap) * 2);
+
+    &__general {
+        display: flex;
+        gap: var(--gap);
+    }
+
+
+    &__player-container {
+        display: flex;
+        gap: var(--gap);
+    }
+
+    &__player {
+        flex: calc(3 / 4);
+        border: 1px solid var(--border-secondary);
+        border-radius: var(--border-radius);
+        aspect-ratio: 16 / 9;
+        
+        app-youtube-player {
+            display: block;
+            height: 100%;
+        }
+    }
+
+    &__controls {
+        flex: calc(1 / 4);
+        display: flex;
+        flex-direction: column;
+        gap: var(--gap);
+    }
+}

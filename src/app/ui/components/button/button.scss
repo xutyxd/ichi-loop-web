@@ -1,0 +1,47 @@
+:host {
+    height: 38px;
+    padding: 0 16px;
+    border: none;
+    background-color: light-dark(var(--bg-primary), var(--bg-primary-dark));
+    color: light-dark(var(--text-primary), var(--text-primary-dark));
+    cursor: pointer;
+    outline: none;
+    font-size: 14px;
+
+    &:hover {
+        background-color: var(--accent);
+        color: var(--text-on-accent);
+    }
+}
+
+:host([outlined]) {
+    border: 1px solid var(--border-secondary);
+    clip-path: polygon(0px 0px, calc(100% - 8px) 0px, 100% 8px, 100% 100%, 0px 100%);
+
+    &:hover {
+        background-color: var(--accent);
+    }
+
+}
+
+:host([filled]) {
+    background-color: var(--accent);
+    color: var(--text-on-accent);
+    clip-path: polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 10px 100%, 0px calc(100% - 10px));
+
+    &:hover {
+        background-color: var(--accent-hover);
+        color: var(--text-on-accent);
+    }
+}
+
+:host([extended]) {
+    font-size: 16px;
+    padding: 12px 24px;
+}
+
+:host([disabled]) {
+    cursor: default;
+    pointer-events: none;
+    opacity: 0.75;
+}

@@ -1,0 +1,27 @@
+
+.session-layout {
+    height: 100%;
+    --title-height: 50px;
+
+    &__header {
+        height: var(--header-height);
+        padding: var(--padding);
+        display: flex;
+        align-items: center;
+    }
+
+    &__content {
+        display: flex;
+        height: calc(100% - var(--header-height) - var(--padding) * 2);
+    }
+
+    &__empty {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        gap: var(--gap);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+}

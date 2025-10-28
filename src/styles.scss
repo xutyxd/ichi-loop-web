@@ -1,1 +1,73 @@
+@use 'fonts';
+
 /* You can add global styles to this file, and also import other style files */
+:root {
+    /* Light Mode (Default) */
+    --bg-primary: #FFFFFF;
+    --bg-secondary: #F9F9F9;
+    --bg-hover: #EFEFEF;
+    --text-primary: #1A1A1A;
+    --text-secondary: #555555;
+    --border-primary: #1A1A1A;
+    --border-secondary: #DEDEDE;
+    --border-dashed: #CCCCCC;
+    --accent: #DF0000;
+    --accent-hover: #FF0040;
+    --text-on-accent: #FFFFFF;
+    /* Dark Mode */
+    --bg-primary-dark: #111111;
+    --bg-secondary-dark: #1A1A1A;
+    --bg-hover-dark: #2B2B2B;
+    --text-primary-dark: #F9F9F9;
+    --text-secondary-dark: #AAAAAA;
+    --border-primary-dark: #F9F9F9;
+    --border-secondary-dark: #333333;
+    --border-dashed-dark: #555555;
+
+    /* Sizes */
+    --default-size: 4px;
+    --padding: calc(var(--default-size) * 4);
+    --header-height: calc(var(--default-size) * 8 - var(--padding) * 2);
+    
+    --gap: calc(var(--default-size) * 2);
+
+    --border-radius: calc(var(--default-size) * 2);
+}
+
+body {
+    // Default the application to a light color theme. This can be changed to
+    // `dark` to enable the dark color theme, or to `light dark` to defer to the
+    // user's system settings.
+    color-scheme: light;
+  
+    // Set a default background, font and text colors for the application using
+    // Angular Material's system-level CSS variables. Learn more about these
+    // variables at https://material.angular.dev/guide/system-variables
+    background-color: light-dark(var(--bg-primary), var(--bg-primary-dark));
+    color: light-dark(var(--text-primary), var(--text-primary-dark));
+  
+    // Reset the user agent margin.
+    margin: 0;
+    font-family: "Geist Mono", "Geist Mono Fallback", monospace;
+}
+
+  
+// [data-theme="dark"] {
+//     body {
+//         color-scheme: dark;
+//     }
+// }
+
+// @media (prefers-color-scheme: dark) {
+//     body {
+//         color-scheme: dark;
+//     }
+// }
+
+[sharp] {
+    clip-path: polygon(0px 0px, calc(100% - 8px) 0px, 100% 8px, 100% 100%, 0px 100%);
+}
+
+[sharper] {
+    
+}
