@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { filter } from 'rxjs';
 
@@ -11,6 +11,7 @@ import { Button } from "../../../ui/components/button/button";
 import { InputForm } from '../../../ui/components/input/input-form/input-form';
 import { Input } from '../../../ui/components/input/input/input';
 import { YoutubePlayer } from '../../../ui/components/youtube-player/youtube-player';
+import { YoutubePlayerStatus } from '../../../ui/enums/youtube-player-status.enum';
 
 @Component({
   selector: 'app-pad-loop-form',
@@ -22,7 +23,11 @@ export class PadLoopForm {
 
     private youtubeUrl = new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.pattern(/^(https?:\/\/)?(www\.)?youtube\.com\/watch\?v=[\w-]{11}(&.*)?$/)] });
 
+    @ViewChild('player') youtubePlayer?: YoutubePlayer;
+
     public videoId?: string;
+
+    public loaded = false;
 
     public padLoopForm = new FormGroup({
         id: new FormControl<string>('', { nonNullable: true }),
@@ -30,8 +35,9 @@ export class PadLoopForm {
         youtubeUrl: this.youtubeUrl,
         time: new FormGroup({
             start: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required] }),
-            end: new FormControl<number>(0, { nonNullable: true })
+            end: new FormControl<number | undefined>(undefined),
         }),
+        key: new FormControl<string | undefined>(undefined),
         volume: new FormControl<number>(0, { nonNullable: true })
     });
 
@@ -45,7 +51,65 @@ export class PadLoopForm {
         this.youtubeUrl.valueChanges.pipe(filter(() => this.youtubeUrl.valid)).subscribe(value => {
             const [, videoId] = value.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/) || [];
             this.videoId = videoId;
+            this.loaded = false;
         });
+    }
+
+    public onReady() {
+        if (!this.youtubePlayer) {
+            return;
+        }
+
+        this.loaded = true;
+    }
+
+    public controls = {
+        play: async () => {
+            if (!this.youtubePlayer || !this.videoId) {
+                return;
+            }
+
+            if (this.youtubePlayer.status === YoutubePlayerStatus.PAUSED) {
+                this.youtubePlayer.controls.play();
+                return;
+            }
+
+            const { start, end } = this.padLoopForm.getRawValue().time;
+
+            await this.youtubePlayer.controls.load(this.videoId, start, end ?? undefined);
+
+            this.youtubePlayer.controls.seek(start);
+        },
+        pause: () => this.youtubePlayer?.controls.pause(),
+        stop: () => this.youtubePlayer?.controls.stop(),
+    }
+    public go = {
+        start: () => {
+            if (!this.youtubePlayer) {
+                return;
+            }
+    
+            const { start } = this.padLoopForm.getRawValue().time;
+    
+            this.youtubePlayer.controls.seek(start);
+        },
+        end: () => {
+            if (!this.youtubePlayer) {
+                return;
+            }
+    
+            const { end } = this.padLoopForm.getRawValue().time;
+    
+            if ([null, undefined].includes(end as null | undefined)) {
+                return;
+            }
+
+            this.youtubePlayer.controls.seek(end as number);
+        }
+    }
+
+    public onKeyDown(event: KeyboardEvent) {
+        console.log('onKeyDown', event.key);
     }
 
     public cancel() {

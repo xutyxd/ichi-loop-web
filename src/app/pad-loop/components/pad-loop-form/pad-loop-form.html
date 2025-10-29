@@ -13,7 +13,6 @@
             <input app-input type="text" formControlName="end">
         </app-input-form>
     </section>
-
     <section>
         <app-input-form>
             <label>Youtube URL</label>
@@ -22,15 +21,19 @@
     </section>
     <section class="pad-loop-form__player-container">
         <div class="pad-loop-form__player">
-            @if(videoId) {
-                <app-youtube-player [videoId]="videoId"></app-youtube-player>
-            }
-            
+            <!-- @if(videoId) { -->
+                <app-youtube-player #player (onReady)="onReady()"></app-youtube-player>
+            <!-- } -->
         </div>
         <div class="pad-loop-form__controls">
             <label>Quick controls</label>
-            <button app-button outlined>Jump to start</button>
-            <button app-button outlined>Jump to end</button>
+            <section class="pad-loop-form__controls__quick">
+                <button app-button outlined (click)="controls.play()">Play</button>
+                <button app-button outlined (click)="controls.pause()">Pause</button>
+                <button app-button outlined (click)="controls.stop()">Stop</button>
+            </section>
+            <button app-button outlined [disabled]="!loaded || null" (click)="go.start()">Jump to start</button>
+            <button app-button outlined [disabled]="!loaded || null" (click)="go.end()">Jump to end</button>
         </div>
     </section>
     <section class="pad-loop-form__footer">

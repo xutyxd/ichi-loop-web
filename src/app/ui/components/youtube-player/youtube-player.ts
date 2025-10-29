@@ -1,11 +1,11 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { YoutubePlayerStatus } from '../../enums/youtube-player-status.enum';
 
 declare global {
     interface Window {
         YT: any;
     }
 }
-
 @Component({
     selector: 'app-youtube-player',
     imports: [],
@@ -13,34 +13,6 @@ declare global {
     styleUrl: './youtube-player.scss',
 })
 export class YoutubePlayer implements AfterViewInit {
-    private player?: Window['YT']['Player'];
-
-    public id = `youtube-player-${crypto.randomUUID()}`;
-
-    @Input() public videoId?: string;
-
-    constructor() {
-        this.player = new window.YT.Player(this.id, {
-            height: '100%',
-            width: '100%',
-            videoId: 'dQw4w9WgXcQ',
-            playerVars: {
-                autoplay: 1,
-                controls: 0,
-                disablekb: 1,
-                enablejsapi: 1,
-                fs: 0,
-                iv_load_policy: 3,
-                modestbranding: 1,
-                rel: 0,
-                showinfo: 0,
-                start: 0,
-                theme: 'light',
-                wmode: 'transparent',
-            },
-        });
-    }
-
     private playerVars = {
         'autoplay': 0,        // We will control play/pause with the API, not autoplay.
         'controls': 0,        // This is the main one. Hides the player controls.
@@ -49,34 +21,105 @@ export class YoutubePlayer implements AfterViewInit {
         'iv_load_policy': 3,  // Hides video annotations.
         'modestbranding': 1,  // Removes the YouTube logo (mostly).
         'playsinline': 1,     // CRITICAL for mobile web. Prevents fullscreen.
-        'disablekb': 1        // Disables keyboard controls.
-      };
+        'disablekb': 1,        // Disables keyboard controls.
+        'start': 0,
+        'end': undefined as number | undefined,
+    };
+
+    private player?: Window['YT']['Player'];
+
+    public id = `youtube-player-${crypto.randomUUID()}`;
+
+    public status = YoutubePlayerStatus.UNSTARTED;
+
+    @Input() public videoId?: string;
+
+    @Output() public onReady = new EventEmitter<void>();
 
     async ngAfterViewInit() {
         if (!this.videoId) {
             return;
         }
+
         this.loadVideoById(this.videoId);
     }
 
-    private loadVideoById(videoId: string) {
+    private loadVideoById(videoId: string, start: number = 0, end?: number) {
+        let resolve: () => void;
+        let reject: () => void;
+
+        const promise = new Promise<void>((_resolve, _reject) => {
+            resolve = _resolve;
+            reject = _reject;
+        });
+
+        this.playerVars = { ...this.playerVars, start, end };
+
+        if (this.player) {
+            this.player.destroy();
+        }
+
         this.player = new window.YT.Player(this.id, {
             height: '100%',
             width: '100%',
             videoId,
             playerVars: this.playerVars,
             events: {
-                onReady: this.onPlayerReady.bind(this),
+                onReady: (event: any) => {
+                    this.onPlayerReady(event);
+                    resolve();
+                },
                 onStateChange: this.onPlayerStateChange.bind(this),
+                onError: (event: any) => {
+                    this.onPlayerError(event);
+                    reject();
+                },
             },
         });
+
+        return promise;
     }
 
     private onPlayerReady(event: any) {
         console.log('onPlayerReady', event);
+        this.onReady.emit();
     }
 
     private onPlayerStateChange(event: any) {
-        console.log('onPlayerStateChange', event);
+        this.status = event.data;
+
+        switch (event.data) {
+            case YoutubePlayerStatus.ENDED:
+                console.log('onPlayerStateChange: ended');
+                if (this.playerVars.end !== undefined) {
+                    this.player?.seekTo(this.playerVars.start, true);
+                }
+                break;
+            case YoutubePlayerStatus.PLAYING:
+                console.log('onPlayerStateChange: playing');
+                break;
+            case YoutubePlayerStatus.PAUSED:
+                console.log('onPlayerStateChange: paused');
+                break;
+            case YoutubePlayerStatus.BUFFERING:
+                console.log('onPlayerStateChange: buffering');
+                break;
+            case YoutubePlayerStatus.CUED:
+                console.log('onPlayerStateChange: cued');
+                break;
+        }
+    }
+
+    private onPlayerError(event: any) {
+        console.log('onPlayerError', event);
+    }
+
+    public controls = {
+        load: (id: string, start: number = 0, end?: number) => this.loadVideoById(id, start, end),
+        play: () => this.player?.playVideo(),
+        seek: (time: number) => this.player?.seekTo(time, true),
+        time: () => this.player?.getCurrentTime(),
+        pause: () => this.player?.pauseVideo(),
+        stop: () => this.player?.stopVideo(),
     }
 }
