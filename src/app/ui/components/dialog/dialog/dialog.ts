@@ -41,9 +41,7 @@ export class Dialog implements AfterViewInit {
         if (!this.dialogRef) {
             return;
         }
-
         const value = data ? { data } : {};
-
         this.dialogRef.nativeElement.close(JSON.stringify(value));
     }
 }

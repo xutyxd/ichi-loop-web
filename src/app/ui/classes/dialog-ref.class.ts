@@ -15,6 +15,7 @@ export class DialogRef {
     }
 
     public close(data?: unknown) {
+        console.log('Closing dialog with: ', data);
         this.instance.close(data);
     }
 }

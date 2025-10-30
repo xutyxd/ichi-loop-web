@@ -55,8 +55,15 @@ export class DialogService {
 
         const close = (event?: Event) => {
             event?.preventDefault();
-            console.log('Event: ', event);
-            closeFn(undefined);
+            console.log('Event: ', event?.returnValue);
+            const value = (event?.target as HTMLDialogElement | undefined)?.returnValue;
+            
+            let formatted = value;
+            try {
+                formatted = JSON.parse(formatted as string).data;
+            } catch { }
+
+            closeFn(formatted as R | undefined);
         };
 
         dialogEl.addEventListener('close', close, { once: true });

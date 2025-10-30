@@ -5,8 +5,8 @@ import { ISession } from '../interfaces/session.interface';
   providedIn: 'root'
 })
 export class SessionService {
-  
     private Sessions = signal<ISession[]>([]);
+
     private Active = signal<ISession | undefined>(undefined);
 
     public sessions = computed(() => this.Sessions());
@@ -24,6 +24,10 @@ export class SessionService {
 
     public select(session: ISession) {
         this.Active.set(session);
+    }
+
+    public update(session: ISession) {
+        this.Sessions.update((sessions) => sessions.map(s => s.id === session.id ? session : s));
     }
 
     public remove(session: ISession) {

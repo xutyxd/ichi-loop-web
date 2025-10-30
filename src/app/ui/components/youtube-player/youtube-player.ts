@@ -58,7 +58,7 @@ export class YoutubePlayer implements AfterViewInit {
         if (this.player) {
             this.player.destroy();
         }
-
+        console.log('Variables: ', this.playerVars);
         this.player = new window.YT.Player(this.id, {
             height: '100%',
             width: '100%',

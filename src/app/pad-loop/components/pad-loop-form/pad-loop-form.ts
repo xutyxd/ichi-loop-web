@@ -75,8 +75,8 @@ export class PadLoopForm {
             }
 
             const { start, end } = this.padLoopForm.getRawValue().time;
-
-            await this.youtubePlayer.controls.load(this.videoId, start, end ?? undefined);
+            console.log('start', start, 'end', end);
+            await this.youtubePlayer.controls.load(this.videoId, Number(start), Number(end) ?? undefined);
 
             this.youtubePlayer.controls.seek(start);
         },
@@ -108,15 +108,12 @@ export class PadLoopForm {
         }
     }
 
-    public onKeyDown(event: KeyboardEvent) {
-        console.log('onKeyDown', event.key);
-    }
-
     public cancel() {
         this.dialogRef.close();
     }
 
     public save() {
+        console.log('save', this.padLoopForm.value);
         this.dialogRef.close(this.padLoopForm.value);
     }
 }

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { IPadLoop } from '../../interfaces/pad-loop.interface';
 
 @Component({
   selector: 'app-pad-loop-button',
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './pad-loop-button.scss',
 })
 export class PadLoopButton {
-
+    @Input() public padLoop?: IPadLoop;
 }
