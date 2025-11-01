@@ -7,8 +7,18 @@ import { AfterViewInit, Component, ElementRef, ViewChild, ViewContainerRef } fro
   styleUrl: './dialog.scss',
 })
 export class Dialog implements AfterViewInit {
+    private resolveFn!: () => void;
+
     @ViewChild('dialog') dialogRef?: ElementRef<HTMLDialogElement>;
     @ViewChild('vc', { read: ViewContainerRef, static: true }) vc!: ViewContainerRef;
+
+    public ready;
+
+    constructor() {
+        this.ready = new Promise<void>((resolve) => {
+            this.resolveFn = resolve;
+        });
+    }
 
     public ngAfterViewInit() {
         if (!this.dialogRef) {
@@ -24,6 +34,8 @@ export class Dialog implements AfterViewInit {
         if (!ref) {
             return;
         }
+        // Mark as ready
+        this.resolveFn();
 
         if (ref.nativeElement.open) {
             return;

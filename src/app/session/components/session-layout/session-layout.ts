@@ -21,7 +21,6 @@ export class SessionLayout {
 
     public async addLoop() {
         const padLoop = await this.dialogService.open(PadLoopForm) as IPadLoop | undefined;
-        console.log('padLoop', padLoop);
 
         if (!padLoop) {
             return;

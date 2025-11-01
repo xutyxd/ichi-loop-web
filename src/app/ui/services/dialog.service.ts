@@ -55,7 +55,7 @@ export class DialogService {
 
         const close = (event?: Event) => {
             event?.preventDefault();
-            console.log('Event: ', event?.returnValue);
+
             const value = (event?.target as HTMLDialogElement | undefined)?.returnValue;
             
             let formatted = value;
@@ -68,8 +68,6 @@ export class DialogService {
 
         dialogEl.addEventListener('close', close, { once: true });
         dialogEl.addEventListener('cancel', close, { once: true });
-        
-        hostRef.instance.open();
 
         return resultPromise;
     }

@@ -75,8 +75,8 @@ export class PadLoopForm {
             }
 
             const { start, end } = this.padLoopForm.getRawValue().time;
-            console.log('start', start, 'end', end);
-            await this.youtubePlayer.controls.load(this.videoId, Number(start), Number(end) ?? undefined);
+
+            await this.youtubePlayer.controls.load(this.videoId, Math.round(start), end ? Math.round(end) : undefined);
 
             this.youtubePlayer.controls.seek(start);
         },
@@ -113,7 +113,6 @@ export class PadLoopForm {
     }
 
     public save() {
-        console.log('save', this.padLoopForm.value);
         this.dialogRef.close(this.padLoopForm.value);
     }
 }

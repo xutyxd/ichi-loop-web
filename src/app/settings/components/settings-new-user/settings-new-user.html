@@ -1,0 +1,8 @@
+
+<section [formGroup]="userForm" class="settings-new-user">
+    <app-input-form>
+        <label>Create a user</label>
+        <input app-input type="text" formControlName="nickname" placeholder="Nickname*">
+    </app-input-form>
+    <button app-button filled extended [disabled]="userForm.invalid || null" (click)="save()">Save</button>
+</section>

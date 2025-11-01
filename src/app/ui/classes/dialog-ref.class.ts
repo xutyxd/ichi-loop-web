@@ -3,11 +3,20 @@ import { Dialog } from "../components/dialog/dialog/dialog";
 
 export class DialogRef {
     private instance: Dialog;
-    public nativeElement: HTMLDialogElement;
+
+    public nativeElement?: HTMLDialogElement;
+
+    public set onClose(fn: (data?: unknown) => void) {
+        this.instance.ready.then(() => {
+            this.nativeElement?.addEventListener('close', fn);
+        });
+    }
 
     constructor(dialog: ComponentRef<Dialog>) {
         this.instance = dialog.instance;
-        this.nativeElement = dialog.instance.dialogRef?.nativeElement as HTMLDialogElement;
+        this.instance.ready.then(() => {
+            this.nativeElement = this.instance.dialogRef?.nativeElement;
+        });
     }
 
     public open() {
@@ -15,7 +24,6 @@ export class DialogRef {
     }
 
     public close(data?: unknown) {
-        console.log('Closing dialog with: ', data);
         this.instance.close(data);
     }
 }

@@ -9,7 +9,7 @@ export const loadSessionGuard: CanActivateFn = (route, state) => {
     // Get sessions
     const sessions = sessionService.sessions();
     // Try to find it
-    const session = sessions.find(s => s.id === sessionId);
+    const session = sessions.find(s => s.uuid === sessionId);
     // If session active it
     if (session) {
         sessionService.select(session);
@@ -23,7 +23,7 @@ export const loadSessionGuard: CanActivateFn = (route, state) => {
         return true;
     }
     // Create a new session
-    sessionService.add({ id: crypto.randomUUID(), title: 'Session 1', padLoops: [] });
+    sessionService.add({ uuid: crypto.randomUUID(), title: 'Session 1', padLoops: [] });
     // Return true to allow the route to be activated
     return true;
 };

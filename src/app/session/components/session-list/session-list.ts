@@ -25,7 +25,7 @@ export class SessionList {
 
         // Create new session
         const session: ISession = {
-            id: crypto.randomUUID(),
+            uuid: crypto.randomUUID(),
             title: `Session ${length + 1}`,
             padLoops: []
         };

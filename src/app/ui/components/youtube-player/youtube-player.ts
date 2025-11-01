@@ -58,7 +58,7 @@ export class YoutubePlayer implements AfterViewInit {
         if (this.player) {
             this.player.destroy();
         }
-        console.log('Variables: ', this.playerVars);
+
         this.player = new window.YT.Player(this.id, {
             height: '100%',
             width: '100%',
@@ -81,7 +81,6 @@ export class YoutubePlayer implements AfterViewInit {
     }
 
     private onPlayerReady(event: any) {
-        console.log('onPlayerReady', event);
         this.onReady.emit();
     }
 
@@ -90,22 +89,17 @@ export class YoutubePlayer implements AfterViewInit {
 
         switch (event.data) {
             case YoutubePlayerStatus.ENDED:
-                console.log('onPlayerStateChange: ended');
                 if (this.playerVars.end !== undefined) {
                     this.player?.seekTo(this.playerVars.start, true);
                 }
                 break;
             case YoutubePlayerStatus.PLAYING:
-                console.log('onPlayerStateChange: playing');
                 break;
             case YoutubePlayerStatus.PAUSED:
-                console.log('onPlayerStateChange: paused');
                 break;
             case YoutubePlayerStatus.BUFFERING:
-                console.log('onPlayerStateChange: buffering');
                 break;
             case YoutubePlayerStatus.CUED:
-                console.log('onPlayerStateChange: cued');
                 break;
         }
     }
