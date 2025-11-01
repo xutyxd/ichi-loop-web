@@ -8,12 +8,14 @@ import { PadLoopForm } from '../pad-loop-form/pad-loop-form';
 import { SessionService } from '../../../session/services/session.service';
 import { YoutubePlayer } from '../../../ui/components/youtube-player/youtube-player';
 import { PadLoopState } from '../../enums/pad-loop-status.enum';
+import { YoutubePlayerStatus } from '../../../ui/enums/youtube-player-status.enum';
+import { PadLoopMode } from '../../enums/pad-loop-mode.enum';
 
 @Component({
-  selector: 'app-pad-loop-button',
-  imports: [LucideAngularModule, Button, YoutubePlayer],
-  templateUrl: './pad-loop-button.html',
-  styleUrl: './pad-loop-button.scss',
+    selector: 'app-pad-loop-button',
+    imports: [LucideAngularModule, Button, YoutubePlayer],
+    templateUrl: './pad-loop-button.html',
+    styleUrl: './pad-loop-button.scss',
 })
 export class PadLoopButton implements AfterViewInit {
     private dialogService = inject(DialogService);
@@ -22,9 +24,11 @@ export class PadLoopButton implements AfterViewInit {
 
     private sessionService = inject(SessionService);
 
+    private last = false;
+
     @ViewChild('player') youtubePlayer?: YoutubePlayer;
 
-    public state = signal<PadLoopState>(PadLoopState.CONFIGURING);
+    // public state = signal<PadLoopState>(PadLoopState.CONFIGURING);
 
     public LucideSettings = LucideSettings;
 
@@ -44,23 +48,50 @@ export class PadLoopButton implements AfterViewInit {
                 return;
             }
 
-            const { time: { start, end }, key } = this.padLoop;
-            const looped = end !== undefined;
+            const state = this.youtubePlayer.state();
+            const { time: { start }, key, mode } = this.padLoop;
 
-            if (keys.has(key)) {
-                this.youtubePlayer.controls.seek(start);
-                this.state.set(PadLoopState.PLAYING);
+            switch (mode) {
+                case PadLoopMode.ONE_SHOT:
+                    if (keys.has(key)) {
+                        this.youtubePlayer.controls.seek(start);
+                    }
+
+                    if (state !== YoutubePlayerStatus.PLAYING) {
+                        this.youtubePlayer.controls.play();
+                    }
+                    break;
+
+                case PadLoopMode.GATE:
+                    const gated = state === YoutubePlayerStatus.PLAYING;
+
+                    if (gated && !keys.has(key)) {
+                        this.youtubePlayer.controls.pause();
+                    }
+
+                    if (!gated && keys.has(key)) {
+                        this.youtubePlayer.controls.seek(start);
+                        this.youtubePlayer.controls.play();
+                    }
+
+                    break;
+
+                case PadLoopMode.LOOP:
+                    const fullTap = this.last && !keys.has(key);
+
+                    if (fullTap) {
+                        if (state === YoutubePlayerStatus.PLAYING) {
+                            this.youtubePlayer.controls.pause();
+                        } else {
+                            this.youtubePlayer.controls.play();
+                        }
+                    }
+
+                    break;
+                default:
+                    break;
             }
-
-            if (!keys.has(key) && !looped) {
-                this.state.set(PadLoopState.PAUSED);
-            }
-        });
-
-        effect(() => {
-            const state = this.state();
-
-            console.log('state', state);
+            this.last = keys.has(key);
         });
     }
 
@@ -73,10 +104,7 @@ export class PadLoopButton implements AfterViewInit {
 
         try {
             await this.youtubePlayer.controls.load(youtubeId, start, end);
-            this.state.set(PadLoopState.READY);
-        } catch (e) {
-            this.state.set(PadLoopState.ERROR);
-        }
+        } catch (e) { }
     }
 
     public async edit() {
@@ -117,12 +145,20 @@ export class PadLoopButton implements AfterViewInit {
         this.sessionService.update(updated);
     }
 
-    public play() {
+    public toggle() {
         if (!this.youtubePlayer) {
             return;
         }
 
+        const keys = this.uiService.keys();
+        const state = this.youtubePlayer.state();
+        const playing = state === YoutubePlayerStatus.PLAYING;
+
+        if (playing) {
+            this.youtubePlayer.controls.pause();
+            return;
+        }
+
         this.youtubePlayer.controls.play();
-        this.state.set(PadLoopState.PLAYING);
     }
 }

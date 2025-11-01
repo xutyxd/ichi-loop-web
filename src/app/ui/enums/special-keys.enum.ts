@@ -1,0 +1,23 @@
+
+export enum SpecialKeys {
+    CONTROL_LEFT = 'ControlLeft',
+    CONTROL_RIGHT = 'ControlRight',
+    SHIFT_LEFT = 'ShiftLeft',
+    SHIFT_RIGHT = 'ShiftRight',
+    ALT_LEFT = 'AltLeft',
+    ALT_RIGHT = 'AltRight',
+    TAB = 'Tab',
+    ENTER = 'Enter',
+    ESCAPE = 'Escape',
+    ARROW_UP = 'ArrowUp',
+    ARROW_DOWN = 'ArrowDown',
+    ARROW_LEFT = 'ArrowLeft',
+    ARROW_RIGHT = 'ArrowRight',
+    SPACE = ' ',
+    BACKSPACE = 'Backspace',
+    DELETE = 'Delete',
+    HOME = 'Home',
+    END = 'End',
+    PAGE_UP = 'PageUp',
+    PAGE_DOWN = 'PageDown',
+}

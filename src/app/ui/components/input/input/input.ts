@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 
 @Component({
   selector: '[app-input]',
@@ -8,4 +8,9 @@ import { Component } from '@angular/core';
 })
 export class Input {
 
+    public isSelect = false;
+
+    constructor(private elementRef: ElementRef) {
+        this.isSelect = this.elementRef.nativeElement.tagName.toLowerCase() === 'select';
+    }
 }

@@ -14,6 +14,7 @@
         display: flex;
         height: calc(100% - var(--header-height) - var(--padding) * 2);
         gap: var(--gap);
+        padding: var(--padding);
     }
 
     &__empty {

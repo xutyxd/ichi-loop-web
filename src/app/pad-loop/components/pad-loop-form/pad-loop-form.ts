@@ -12,6 +12,7 @@ import { InputForm } from '../../../ui/components/input/input-form/input-form';
 import { Input } from '../../../ui/components/input/input/input';
 import { YoutubePlayer } from '../../../ui/components/youtube-player/youtube-player';
 import { YoutubePlayerStatus } from '../../../ui/enums/youtube-player-status.enum';
+import { PadLoopMode } from '../../enums/pad-loop-mode.enum';
 
 @Component({
   selector: 'app-pad-loop-form',
@@ -23,6 +24,8 @@ export class PadLoopForm {
     @ViewChild('player') youtubePlayer?: YoutubePlayer;
 
     public youtubeUrl = new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.pattern(/^(https?:\/\/)?(www\.)?youtube\.com\/watch\?v=[\w-]{11}(&.*)?$/)] });
+
+    public types = PadLoopMode;
 
     public videoId?: string;
 
@@ -37,6 +40,7 @@ export class PadLoopForm {
             end: new FormControl<number | undefined>(undefined),
         }),
         key: new FormControl<string | undefined>({ value: undefined, disabled: false }, { nonNullable: true, validators: [Validators.required] }),
+        mode: new FormControl<PadLoopMode>(PadLoopMode.LOOP, { nonNullable: true }),
         volume: new FormControl<number>(0, { nonNullable: true })
     });
 
@@ -48,6 +52,7 @@ export class PadLoopForm {
             if (padLoop.youtubeId) {
                 const url = `https://www.youtube.com/watch?v=${padLoop.youtubeId}`;
                 this.youtubeUrl.setValue(url, { emitEvent: false });
+                this.videoId = padLoop.youtubeId;
             }
         }
 
@@ -80,11 +85,14 @@ export class PadLoopForm {
 
     public controls = {
         play: async () => {
+
             if (!this.youtubePlayer || !this.videoId) {
                 return;
             }
 
-            if (this.youtubePlayer.status === YoutubePlayerStatus.PAUSED) {
+            const state = this.youtubePlayer.state();
+
+            if (state === YoutubePlayerStatus.PAUSED) {
                 this.youtubePlayer.controls.play();
                 return;
             }
@@ -95,11 +103,18 @@ export class PadLoopForm {
 
             this.youtubePlayer.controls.seek(start);
         },
-        pause: () => this.youtubePlayer?.controls.pause(),
-        stop: () => this.youtubePlayer?.controls.stop(),
+        pause: () => {
+
+            this.youtubePlayer?.controls.pause()
+        },
+        stop: () => {
+
+            this.youtubePlayer?.controls.stop()
+        },
     }
     public go = {
         start: () => {
+
             if (!this.youtubePlayer) {
                 return;
             }
@@ -109,13 +124,14 @@ export class PadLoopForm {
             this.youtubePlayer.controls.seek(start);
         },
         end: () => {
+
             if (!this.youtubePlayer) {
                 return;
             }
     
             const { end } = this.padLoopForm.getRawValue().time;
-    
-            if ([null, undefined].includes(end as null | undefined)) {
+
+            if ([null, undefined, ''].includes(end as null | undefined)) {
                 return;
             }
 

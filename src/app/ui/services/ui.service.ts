@@ -1,15 +1,23 @@
 import { computed, Injectable, NgZone, signal } from '@angular/core';
+import { SpecialKeys } from '../enums/special-keys.enum';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UiService {
     private Keys = {
+        special: new Set(Object.values(SpecialKeys)),
         pressed: signal<Set<string>>(new Set()),
         add: (event: KeyboardEvent) => {
-            // // Stop propagation
-            // event.stopPropagation();
-            // event.preventDefault();
+            const pressed = [...this.Keys.pressed()];
+            const special = pressed.some((key) => this.Keys.special.has(key as any));
+            // Avoid exit from app
+            if (pressed.length > 0 && special) {
+                // Stop propagation
+                event.stopPropagation();
+                event.preventDefault();
+            }
+            
             // Get code
             const { code } = event;
             // Get current keys

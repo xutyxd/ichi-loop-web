@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, computed, EventEmitter, Input, OnInit, Output, signal } from '@angular/core';
 import { YoutubePlayerStatus } from '../../enums/youtube-player-status.enum';
 
 declare global {
@@ -28,9 +28,11 @@ export class YoutubePlayer implements AfterViewInit {
 
     private player?: Window['YT']['Player'];
 
+    private State = signal<YoutubePlayerStatus>(YoutubePlayerStatus.UNSTARTED);
+
     public id = `youtube-player-${crypto.randomUUID()}`;
 
-    public status = YoutubePlayerStatus.UNSTARTED;
+    public state = computed(() => this.State());
 
     @Input() public videoId?: string;
 
@@ -65,8 +67,8 @@ export class YoutubePlayer implements AfterViewInit {
             videoId,
             playerVars: this.playerVars,
             events: {
-                onReady: (event: any) => {
-                    this.onPlayerReady(event);
+                onReady: () => {
+                    this.onPlayerReady();
                     resolve();
                 },
                 onStateChange: this.onPlayerStateChange.bind(this),
@@ -80,12 +82,12 @@ export class YoutubePlayer implements AfterViewInit {
         return promise;
     }
 
-    private onPlayerReady(event: any) {
+    private onPlayerReady() {
         this.onReady.emit();
     }
 
     private onPlayerStateChange(event: any) {
-        this.status = event.data;
+        this.State.set(event.data);
 
         switch (event.data) {
             case YoutubePlayerStatus.ENDED:
