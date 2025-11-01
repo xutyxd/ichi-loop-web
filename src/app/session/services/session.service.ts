@@ -33,7 +33,7 @@ export class SessionService {
             sessions = this.userStorageService.get('sessions');
         } catch { }
 
-        this.Sessions = signal<ISession[]>(sessions);
+        this.Sessions = signal<ISession[]>(sessions ?? []);
     }
 
     public add(session: ISession) {

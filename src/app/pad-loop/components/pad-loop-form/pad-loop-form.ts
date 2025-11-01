@@ -20,19 +20,18 @@ import { YoutubePlayerStatus } from '../../../ui/enums/youtube-player-status.enu
   styleUrl: './pad-loop-form.scss',
 })
 export class PadLoopForm {
-
-    private youtubeUrl = new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.pattern(/^(https?:\/\/)?(www\.)?youtube\.com\/watch\?v=[\w-]{11}(&.*)?$/)] });
-
     @ViewChild('player') youtubePlayer?: YoutubePlayer;
+
+    public youtubeUrl = new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.pattern(/^(https?:\/\/)?(www\.)?youtube\.com\/watch\?v=[\w-]{11}(&.*)?$/)] });
 
     public videoId?: string;
 
     public loaded = false;
 
     public padLoopForm = new FormGroup({
-        id: new FormControl<string>('', { nonNullable: true }),
+        uuid: new FormControl<string>(crypto.randomUUID(), { nonNullable: true }),
         title: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.minLength(3)] }),
-        youtubeUrl: this.youtubeUrl,
+        youtubeId: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
         time: new FormGroup({
             start: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required] }),
             end: new FormControl<number | undefined>(undefined),
@@ -43,13 +42,18 @@ export class PadLoopForm {
 
     constructor(private dialogRef: DialogRef,
                 @Inject(DIALOG_DATA) padLoop?: Partial<IPadLoop>) {
-
         if (padLoop) {
             this.padLoopForm.patchValue(padLoop);
+
+            if (padLoop.youtubeId) {
+                const url = `https://www.youtube.com/watch?v=${padLoop.youtubeId}`;
+                this.youtubeUrl.setValue(url, { emitEvent: false });
+            }
         }
 
         this.youtubeUrl.valueChanges.pipe(filter(() => this.youtubeUrl.valid)).subscribe(value => {
             const [, videoId] = value.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/) || [];
+            this.padLoopForm.patchValue({ youtubeId: videoId });
             this.videoId = videoId;
             this.loaded = false;
         });
@@ -113,6 +117,10 @@ export class PadLoopForm {
     }
 
     public save() {
+        if (this.padLoopForm.invalid) {
+            return;
+        }
+
         this.dialogRef.close(this.padLoopForm.value);
     }
 }

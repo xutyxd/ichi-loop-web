@@ -7,9 +7,9 @@ export class UiService {
     private Keys = {
         pressed: signal<Set<string>>(new Set()),
         add: (event: KeyboardEvent) => {
-            // Stop propagation
-            event.stopPropagation();
-            event.preventDefault();
+            // // Stop propagation
+            // event.stopPropagation();
+            // event.preventDefault();
             // Get code
             const { code } = event;
             // Get current keys
@@ -22,11 +22,12 @@ export class UiService {
             current.add(code);
             // Set new keys
             this.Keys.pressed.set(current);
+            console.log('pressed', current);
         },
         remove: (event: KeyboardEvent) => {
-            // Stop propagation
-            event.stopPropagation();
-            event.preventDefault();
+            // // Stop propagation
+            // event.stopPropagation();
+            // event.preventDefault();
             // Get code
             const { code } = event;
             // Get current keys

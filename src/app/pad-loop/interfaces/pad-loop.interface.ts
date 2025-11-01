@@ -1,7 +1,7 @@
 export interface IPadLoop {
-    id: string;
+    uuid: string;
     title: string;
-    youtubeUrl: string;
+    youtubeId: string;
     time: {
         start: number;
         end: number;

@@ -13,6 +13,7 @@
     &__content {
         display: flex;
         height: calc(100% - var(--header-height) - var(--padding) * 2);
+        gap: var(--gap);
     }
 
     &__empty {
@@ -23,5 +24,9 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+    }
+
+    &__loop {
+        flex: 1;
     }
 }

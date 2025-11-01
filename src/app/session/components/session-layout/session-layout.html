@@ -1,28 +1,25 @@
 <div class="session-layout">
     @if(session(); as session) {
-        <div class="session-layout__header">
-            <div class="session-layout__header-title">
-                <span>{{ session.title }}</span>
-            </div>
+    <div class="session-layout__header">
+        <div class="session-layout__header-title">
+            <span>{{ session.title }}</span>
         </div>
+    </div>
 
-        <div class="session-layout__content">
-            Pad loops: {{session.padLoops.length}}
-            @if(session.padLoops.length === 0) {
-                <div class="session-layout__empty">
-                    <span>NO LOOPS DETECTED</span>
-                    <span>INITIALIZE FIRST LOOP SEQUENCE</span>
-                    <button app-button filled extended (click)="addLoop()">ADD LOOP</button>
-                </div>
-            }
-
-            @for (padLoop of session.padLoops; track $index) {
-                <div class="session-layout__loop">
-                    <div class="session-layout__loop-title">
-                        <app-pad-loop-button [padLoop]="padLoop"></app-pad-loop-button>
-                    </div>
-                </div>
-            }
+    <div class="session-layout__content">
+        @if(session.padLoops.length === 0) {
+        <div class="session-layout__empty">
+            <span>NO LOOPS DETECTED</span>
+            <span>INITIALIZE FIRST LOOP SEQUENCE</span>
+            <button app-button filled extended (click)="addLoop()">ADD LOOP</button>
         </div>
+        }
+
+        @for (padLoop of session.padLoops; track padLoop) {
+        <div class="session-layout__loop">
+            <app-pad-loop-button [padLoop]="padLoop"></app-pad-loop-button>
+        </div>
+        }
+    </div>
     }
 </div>

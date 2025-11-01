@@ -1,14 +1,22 @@
 
-<section class="pad-loop">
-    <section class="pad-loop__header">
-        <h1>{{ padLoop?.title }}</h1>
-        <div class="pad-loop__actions">
-            <button app-button outlined (click)="edit()">
-                <lucide-icon [img]="LucideSettings"></lucide-icon>
+@if (padLoop) {
+    <section class="pad-loop">
+        <section class="pad-loop__header">
+            <span>{{ padLoop.title }}</span>
+            <div class="pad-loop__actions">
+                <button app-button outlined small (click)="edit()">
+                    <lucide-icon [img]="LucideSettings" size="16"></lucide-icon>
+                </button>
+                <button app-button outlined small (click)="remove()">
+                    <lucide-icon [img]="LucideTrash" size="16"></lucide-icon>
+                </button>
+            </div>
+        </section>
+        <section class="pad-loop__content">
+            <button app-button outlined (click)="play()">
+                <lucide-icon [img]="LucidePlay"></lucide-icon>
             </button>
-            <button app-button outlined (click)="remove()">
-                <lucide-icon [img]="LucideTrash"></lucide-icon>
-            </button>
-        </div>
+            <app-youtube-player #player (onReady)="onReady()"></app-youtube-player>
+        </section>
     </section>
-</section>
+}

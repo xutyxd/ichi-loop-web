@@ -40,6 +40,11 @@
     padding: 12px 24px;
 }
 
+:host([small]) {
+    height: auto;
+    padding: var(--default-size);
+}
+
 :host([disabled]) {
     cursor: default;
     pointer-events: none;
