@@ -7,7 +7,7 @@
     </div>
 
     <div class="session-layout__content">
-        @if(session.padLoops.length === 0) {
+        @if(padLoops().length === 0) {
         <div class="session-layout__empty">
             <span>NO LOOPS DETECTED</span>
             <span>INITIALIZE FIRST LOOP SEQUENCE</span>
@@ -15,7 +15,7 @@
         </div>
         }
 
-        @for (padLoop of session.padLoops; track padLoop) {
+        @for (padLoop of padLoops(); track padLoop.uuid) {
         <div class="session-layout__loop">
             <app-pad-loop-button [padLoop]="padLoop"></app-pad-loop-button>
         </div>

@@ -9,6 +9,9 @@
         gap: var(--gap);
     }
 
+    &__key {
+        width: 25px;
+    }
 
     &__player-container {
         display: flex;

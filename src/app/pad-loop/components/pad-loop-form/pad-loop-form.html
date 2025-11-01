@@ -12,6 +12,10 @@
             <label>End</label>
             <input app-input type="text" formControlName="end">
         </app-input-form>
+        <app-input-form>
+            <label>Key</label>
+            <input app-input type="text" formControlName="key" (keydown)="onKeydown($event)">
+        </app-input-form>
     </section>
     <!-- <section>
         <app-input-form>

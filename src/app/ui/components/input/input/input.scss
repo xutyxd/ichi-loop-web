@@ -1,6 +1,7 @@
 :host {
     display: block;
     width: calc(100% - var(--default-size) * 3 * 2 - 2px);
+    height: calc(var(--default-size) * 4);
     padding: calc(var(--default-size) * 2) calc(var(--default-size) * 3);
     border: 1px solid var(--border-secondary);
     border-radius: calc(var(--border-radius) / 2);

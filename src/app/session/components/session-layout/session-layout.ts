@@ -6,6 +6,7 @@ import { DialogService } from '../../../ui/services/dialog.service';
 import { PadLoopForm } from '../../../pad-loop/components/pad-loop-form/pad-loop-form';
 import { IPadLoop } from '../../../pad-loop/interfaces/pad-loop.interface';
 import { PadLoopButton } from '../../../pad-loop/components/pad-loop-button/pad-loop-button';
+import { PadLoopService } from '../../../pad-loop/services/pad-loop.service';
 
 @Component({
   selector: 'app-session-layout',
@@ -16,8 +17,11 @@ import { PadLoopButton } from '../../../pad-loop/components/pad-loop-button/pad-
 export class SessionLayout {
     private dialogService = inject(DialogService);
     private sessionService = inject(SessionService);
+    private padLoopService = inject(PadLoopService);
     
     public session = this.sessionService.active;
+
+    public padLoops = this.padLoopService.padLoops;
 
     public async addLoop() {
         const padLoop = await this.dialogService.open(PadLoopForm) as IPadLoop | undefined;

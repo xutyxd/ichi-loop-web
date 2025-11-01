@@ -36,7 +36,7 @@ export class PadLoopForm {
             start: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required] }),
             end: new FormControl<number | undefined>(undefined),
         }),
-        key: new FormControl<string | undefined>(undefined),
+        key: new FormControl<string | undefined>({ value: undefined, disabled: false }, { nonNullable: true, validators: [Validators.required] }),
         volume: new FormControl<number>(0, { nonNullable: true })
     });
 
@@ -57,6 +57,17 @@ export class PadLoopForm {
             this.videoId = videoId;
             this.loaded = false;
         });
+    }
+
+    public onKeydown(event: KeyboardEvent) {
+        if (event.key.length !== 1) {
+            return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        this.padLoopForm.patchValue({ key: event.code });
     }
 
     public onReady() {

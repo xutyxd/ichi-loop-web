@@ -1,5 +1,5 @@
 
-export enum PadLoopStatus {
+export enum PadLoopState {
     CONFIGURING = 'configuring',
     READY = 'ready',
     PLAYING = 'playing',
