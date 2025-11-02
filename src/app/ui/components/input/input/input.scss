@@ -14,7 +14,7 @@
     }
 
     &select {
-        background: transparent;
+        background: light-dark(var(--bg-primary), var(--bg-primary-dark));
         cursor: pointer;
         width: 100%;
         height: 100%;
