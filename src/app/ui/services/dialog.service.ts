@@ -1,7 +1,8 @@
 import { ApplicationRef, createComponent, createEnvironmentInjector, EnvironmentInjector, inject, Injectable, Injector, Type } from '@angular/core';
 import { Dialog } from '../components/dialog/dialog/dialog';
-import { DIALOG_CLOSE, DIALOG_DATA } from '../tokens/dialog.tokens';
+import { DIALOG_DATA } from '../tokens/dialog.tokens';
 import { DialogRef } from '../classes/dialog-ref.class';
+import { UiService } from './ui.service';
 
 @Injectable({
     providedIn: 'root'
@@ -10,7 +11,10 @@ export class DialogService {
     private appRef = inject(ApplicationRef);
     private envInjector = inject(EnvironmentInjector);
 
+    private uiService = inject(UiService);
+
     public open<T, R = unknown>(component: Type<T>, data?: unknown): Promise<R | undefined> {
+        this.uiService.disableKeys();
         // Create a new dialog component to host component inside
         const hostRef = createComponent(Dialog, {
             environmentInjector: this.envInjector
@@ -63,6 +67,7 @@ export class DialogService {
                 formatted = JSON.parse(formatted as string).data;
             } catch { }
 
+            this.uiService.enableKeys();
             closeFn(formatted as R | undefined);
         };
 

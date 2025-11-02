@@ -38,6 +38,17 @@
         gap: var(--gap);
     }
 
+    &__controls-quick {
+        display: flex;
+        gap: var(--gap);
+
+        lucide-icon {
+            display: block;
+            height: 16px;
+            width: 16px;
+        }
+    }
+
     &__footer {
         justify-content: flex-end;
     }

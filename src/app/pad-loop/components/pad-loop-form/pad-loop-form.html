@@ -47,10 +47,16 @@
         </div>
         <div class="pad-loop-form__controls">
             <label>Quick controls</label>
-            <section class="pad-loop-form__controls__quick">
-                <button app-button outlined (click)="controls.play()">Play</button>
-                <button app-button outlined (click)="controls.pause()">Pause</button>
-                <button app-button outlined (click)="controls.stop()">Stop</button>
+            <section class="pad-loop-form__controls-quick">
+                <button app-button outlined (click)="controls.play()">
+                    <lucide-icon name="LucidePlay" size="16"></lucide-icon>
+                </button>
+                <button app-button outlined (click)="controls.pause()">
+                    <lucide-icon name="LucidePause" size="16"></lucide-icon>
+                </button>
+                <button app-button outlined (click)="controls.stop()">
+                    <lucide-icon name="LucideSquare" size="16"></lucide-icon>
+                </button>
             </section>
             <button app-button outlined [disabled]="!loaded || null" (click)="go.start()">Jump to start</button>
             <button app-button outlined [disabled]="!loaded || !padLoopForm.value.time?.end || null" (click)="go.end()">Jump to end</button>

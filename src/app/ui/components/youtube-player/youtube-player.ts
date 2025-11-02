@@ -61,6 +61,8 @@ export class YoutubePlayer implements AfterViewInit {
             this.player.destroy();
         }
 
+        let buffering = true;
+
         this.player = new window.YT.Player(this.id, {
             height: '100%',
             width: '100%',
@@ -68,10 +70,30 @@ export class YoutubePlayer implements AfterViewInit {
             playerVars: this.playerVars,
             events: {
                 onReady: () => {
-                    this.onPlayerReady();
-                    resolve();
+                    this.controls.mute();
+                    this.controls.play();
                 },
-                onStateChange: this.onPlayerStateChange.bind(this),
+                onStateChange: async (event: any) => {
+
+                    if (buffering) {
+                        if (event.data === YoutubePlayerStatus.PLAYING) {
+                            this.controls.pause();
+                            this.controls.seek(start);
+                        }
+
+                        if (event.data === YoutubePlayerStatus.PAUSED) {
+                            buffering = false;
+                            this.controls.seek(start);
+                            this.controls.unmute();
+                            this.onPlayerReady();
+                            resolve();
+                        }
+
+                        return;
+                    }
+
+                    this.onPlayerStateChange(event);
+                },
                 onError: (event: any) => {
                     this.onPlayerError(event);
                     reject();
@@ -115,6 +137,8 @@ export class YoutubePlayer implements AfterViewInit {
         load: (id: string, start: number = 0, end?: number) => this.loadVideoById(id, start, end),
         play: () => this.player?.playVideo(),
         seek: (time: number) => this.player?.seekTo(time, true),
+        mute: () => this.player?.mute(),
+        unmute: () => this.player?.unMute(),
         time: () => this.player?.getCurrentTime(),
         pause: () => this.player?.pauseVideo(),
         stop: () => this.player?.stopVideo(),

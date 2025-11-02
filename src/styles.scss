@@ -1,5 +1,6 @@
 @use 'fonts';
 @use 'animations';
+
 /* You can add global styles to this file, and also import other style files */
 :root {
     /* Light Mode (Default) */
@@ -28,7 +29,7 @@
     --default-size: 4px;
     --padding: calc(var(--default-size) * 4);
     --header-height: calc(var(--default-size) * 8 - var(--padding) * 2);
-    
+
     --gap: calc(var(--default-size) * 2);
 
     --border-radius: calc(var(--default-size) * 2);
@@ -39,19 +40,19 @@ body {
     // `dark` to enable the dark color theme, or to `light dark` to defer to the
     // user's system settings.
     color-scheme: light;
-  
+
     // Set a default background, font and text colors for the application using
     // Angular Material's system-level CSS variables. Learn more about these
     // variables at https://material.angular.dev/guide/system-variables
     background-color: light-dark(var(--bg-primary), var(--bg-primary-dark));
     color: light-dark(var(--text-primary), var(--text-primary-dark));
-  
+
     // Reset the user agent margin.
     margin: 0;
     font-family: "Geist Mono", "Geist Mono Fallback", monospace;
 }
 
-  
+
 [data-theme="dark"] {
     body {
         color-scheme: dark;
@@ -64,10 +65,17 @@ body {
     }
 }
 
-[sharp] {
-    clip-path: polygon(0px 0px, calc(100% - 8px) 0px, 100% 8px, 100% 100%, 0px 100%);
+// [sharp] {
+//     clip-path: polygon(0px 0px, calc(100% - 8px) 0px, 100% 8px, 100% 100%, 0px 100%);
+// }
+[sharp]::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: #f7f7f7;
+    /* Background color of button */
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+    z-index: -1;
 }
 
-[sharper] {
-    
-}
+[sharper] {}

@@ -1,6 +1,7 @@
 import { Component, Inject, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { filter } from 'rxjs';
+import { LucideAngularModule } from 'lucide-angular';
 
 import { IPadLoop } from '../../interfaces/pad-loop.interface';
 
@@ -14,9 +15,10 @@ import { YoutubePlayer } from '../../../ui/components/youtube-player/youtube-pla
 import { YoutubePlayerStatus } from '../../../ui/enums/youtube-player-status.enum';
 import { PadLoopMode } from '../../enums/pad-loop-mode.enum';
 
+
 @Component({
   selector: 'app-pad-loop-form',
-  imports: [ReactiveFormsModule, InputForm, Input, Button, YoutubePlayer],
+  imports: [ReactiveFormsModule, LucideAngularModule, InputForm, Input, Button, YoutubePlayer],
   templateUrl: './pad-loop-form.html',
   styleUrl: './pad-loop-form.scss',
 })

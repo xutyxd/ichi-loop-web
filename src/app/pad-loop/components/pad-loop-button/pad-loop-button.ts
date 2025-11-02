@@ -149,7 +149,16 @@ export class PadLoopButton implements OnInit, AfterViewInit {
         const { youtubeId, time: { start, end } } = this.padLoop;
 
         try {
+            // Load youtube player
             await this.youtubePlayer.controls.load(youtubeId, start, end);
+            // // Force buffering
+            // // Play to buffer
+            // await this.youtubePlayer.controls.play();
+            // // Seek to start
+            // await this.youtubePlayer.controls.seek(start);
+            // // Pause
+            // await this.youtubePlayer.controls.pause();
+            // Set icon
             this.icon.set('LucidePlay');
         } catch (e) { }
     }

@@ -5,6 +5,7 @@ import { Button } from '../../../ui/components/button/button';
 
 import { SessionService } from '../../services/session.service';
 import { ISession } from '../../interfaces/session.interface';
+import { Router } from '@angular/router';
 
 
 
@@ -15,6 +16,7 @@ import { ISession } from '../../interfaces/session.interface';
   styleUrl: './session-list.scss',
 })
 export class SessionList {
+    private router: Router = inject(Router);
     private sessionService: SessionService = inject(SessionService);
 
     public sessions = this.sessionService.sessions;
@@ -34,7 +36,8 @@ export class SessionList {
     }
 
     public select(session: ISession) {
-        this.sessionService.select(session);
+        // Navigate to session
+        this.router.navigate([`/${session.uuid}`]);
     }
 
     public remove(session: ISession) {

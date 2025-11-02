@@ -20,6 +20,12 @@
             <app-pad-loop-button [padLoop]="padLoop"></app-pad-loop-button>
         </div>
         }
+
+        @if (padLoops().length) {
+            <div class="session-layout__loop">
+                <app-pad-loop-empty></app-pad-loop-empty>
+            </div>
+        }
     </div>
     }
 </div>

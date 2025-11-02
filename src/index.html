@@ -1,14 +1,113 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <title>IchiLoop</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <script src="https://www.youtube.com/iframe_api"></script>
+    <meta charset="utf-8">
+    <title>IchiLoop</title>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <script src="https://www.youtube.com/iframe_api" async></script>
+    <style>
+        @font-face {
+            font-family: 'WDXL Lubrifont JP N';
+            src: url('/fonts/WDXLLubrifontJPN-Regular.woff2') format('woff2'),
+                url('/fonts/WDXLLubrifontJPN-Regular.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        .splash-screen-container {
+            z-index: 1001;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 32px;
+            transition: 300ms;
+            background-color: light-dark(#FFFFFF, #111111);
+        }
+
+        .splash-screen-container.fade {
+            overflow-y: hidden;
+            opacity: 0;
+        }
+
+        .splash-screen-logo {
+            position: relative;
+            height: 105px;
+            width: 85px;
+        }
+
+        .splash-screen-logo span {
+            position: absolute;
+            font-family: 'WDXL Lubrifont JP N';
+            font-size: 110px;
+        }
+
+        .splash-screen-label {
+            font-size: 25px;
+            font-weight: 600;
+        }
+    </style>
 </head>
+
 <body>
-  <app-root></app-root>
+    <section class="splash-screen-container">
+        <section class="splash-screen-logo">
+            <span style="
+                font-family: 'WDXL Lubrifont JP N';
+                font-weight: 800;
+                top: calc(1% - -1px);
+                left: calc(1% - 10px);
+                color: var(--bg-hover-dark);">
+                壱
+            </span>
+            <span style="
+                font-family: 'WDXL Lubrifont JP N';
+                font-weight: 800;
+                top: calc(1% - -1px);
+                left: calc(1% - 1px);
+                color: var(--bg-hover-dark);
+                color: white;">
+                壱
+            </span>
+            <span style="
+                font-family: 'WDXL Lubrifont JP N';
+                font-weight: 400;
+                top: calc(1% - -2px);
+                left: calc(1% - 2px);
+                color: white;">
+                壱
+            </span>
+            <span style="
+                font-family: 'WDXL Lubrifont JP N';
+                font-weight: 100;
+                top: calc(1% - 0px);
+                left: calc(1% - 3px);
+                color: var(--accent);">
+                壱
+            </span>
+            <span style="
+                font-family: 'WDXL Lubrifont JP N';
+                font-weight: 400;
+                top: 1%;
+                left: 1%;
+                color: white;">
+                壱
+            </span>
+        </section>
+        <section class="splash-screen-label">
+            ICHI LOOP
+        </section>
+        <section class="splash-screen-footer"></section>
+    </section>
+    <app-root></app-root>
 </body>
 </html>

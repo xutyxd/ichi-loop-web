@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 
-import { LucideAngularModule } from 'lucide-angular';
+import { LucideAngularModule, LucidePlus, LucideSquare, Plus } from 'lucide-angular';
 import { LucideSettings, LucideTrash, LucideLoaderCircle, LucidePlay, LucidePause, LucideInfinity, ArrowRightFromLine, CircleFadingArrowUp } from 'lucide-angular';
 
 export const appConfig: ApplicationConfig = {
@@ -18,9 +18,11 @@ export const appConfig: ApplicationConfig = {
             LucideLoaderCircle,
             LucidePlay,
             LucidePause,
+            LucideSquare,
             LucideInfinity,
             ArrowRightFromLine,
-            CircleFadingArrowUp
+            CircleFadingArrowUp,
+            Plus
         })
     )
   ]

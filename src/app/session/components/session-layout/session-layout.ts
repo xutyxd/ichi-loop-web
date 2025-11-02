@@ -1,16 +1,22 @@
 import { Component, inject } from '@angular/core';
-import { SessionService } from '../../services/session.service';
 
 import { Button } from '../../../ui/components/button/button';
 import { DialogService } from '../../../ui/services/dialog.service';
-import { PadLoopForm } from '../../../pad-loop/components/pad-loop-form/pad-loop-form';
-import { IPadLoop } from '../../../pad-loop/interfaces/pad-loop.interface';
-import { PadLoopButton } from '../../../pad-loop/components/pad-loop-button/pad-loop-button';
+
 import { PadLoopService } from '../../../pad-loop/services/pad-loop.service';
+import { IPadLoop } from '../../../pad-loop/interfaces/pad-loop.interface';
+import { PadLoopForm } from '../../../pad-loop/components/pad-loop-form/pad-loop-form';
+import { PadLoopButton } from '../../../pad-loop/components/pad-loop-button/pad-loop-button';
+import { PadLoopEmpty } from '../../../pad-loop/components/pad-loop-empty/pad-loop-empty';
+
+import { SessionService } from '../../services/session.service';
+
+
+
 
 @Component({
   selector: 'app-session-layout',
-  imports: [Button, PadLoopButton],
+  imports: [Button, PadLoopButton, PadLoopEmpty],
   templateUrl: './session-layout.html',
   styleUrl: './session-layout.scss',
 })

@@ -12,8 +12,9 @@
 
     &__content {
         display: flex;
-        height: calc(100% - var(--header-height) - var(--padding) * 2);
-        gap: var(--gap);
+        flex-wrap: wrap;
+        max-height: calc(100% - var(--header-height) - var(--padding) * 4);
+        gap: calc(var(--gap) * 2);
         padding: var(--padding);
     }
 
@@ -28,6 +29,6 @@
     }
 
     &__loop {
-        flex: 1;
+        // height: fit-content;
     }
 }

@@ -1,0 +1,13 @@
+
+.pad-loop-empty {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+    border: 1px solid light-dark(var(--border-secondary), var(--border-secondary-dark));
+    width: 250px;
+    padding: var(--padding);
+    // height: calc(100% - var(--padding) * 2 - 2px);
+    height: calc(193px - var(--padding) * 2 - 2px);
+    align-items: center;
+    justify-content: center;
+}

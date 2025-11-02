@@ -8,6 +8,7 @@ export class UiService {
     private Keys = {
         special: new Set(Object.values(SpecialKeys)),
         pressed: signal<Set<string>>(new Set()),
+        disable: false,
         add: (event: KeyboardEvent) => {
             const pressed = [...this.Keys.pressed()];
             const special = pressed.some((key) => this.Keys.special.has(key as any));
@@ -56,9 +57,33 @@ export class UiService {
     constructor(ngZone: NgZone) {
         // Avoid zone for performance
         ngZone.runOutsideAngular(() => {
-            window.addEventListener('keydown', this.Keys.add);
-            window.addEventListener('keyup', this.Keys.remove);
-            window.addEventListener('blur', this.Keys.clean);
+            window.addEventListener('keydown', (event: KeyboardEvent) => {
+                if (this.Keys.disable) {
+                    return;
+                }
+
+                this.Keys.add(event);
+            });
+            window.addEventListener('keyup', (event: KeyboardEvent) => {
+                if (this.Keys.disable) {
+                    return;
+                }
+                this.Keys.remove(event);
+            });
+            window.addEventListener('blur', () => {
+                if (this.Keys.disable) {
+                    return;
+                }
+                this.Keys.clean();
+            });
         });
+    }
+
+    public disableKeys() {
+        this.Keys.disable = true;
+    }
+
+    public enableKeys() {
+        this.Keys.disable = false;
     }
 }

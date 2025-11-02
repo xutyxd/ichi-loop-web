@@ -3,7 +3,7 @@ import { SessionLayout } from "./components/session-layout/session-layout";
 
 export const CORE_ROUTES: Routes = [
     {
-        path: '',
+        path: ':id',
         component: SessionLayout
     }
 ]
