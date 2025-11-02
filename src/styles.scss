@@ -1,5 +1,5 @@
 @use 'fonts';
-
+@use 'animations';
 /* You can add global styles to this file, and also import other style files */
 :root {
     /* Light Mode (Default) */
@@ -52,17 +52,17 @@ body {
 }
 
   
-// [data-theme="dark"] {
-//     body {
-//         color-scheme: dark;
-//     }
-// }
+[data-theme="dark"] {
+    body {
+        color-scheme: dark;
+    }
+}
 
-// @media (prefers-color-scheme: dark) {
-//     body {
-//         color-scheme: dark;
-//     }
-// }
+@media (prefers-color-scheme: dark) {
+    body {
+        color-scheme: dark;
+    }
+}
 
 [sharp] {
     clip-path: polygon(0px 0px, calc(100% - 8px) 0px, 100% 8px, 100% 100%, 0px 100%);

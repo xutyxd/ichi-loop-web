@@ -6,4 +6,5 @@ export enum YoutubePlayerStatus {
     PAUSED = 2,
     BUFFERING = 3,
     CUED = 5,
+    READY = 6,
 }

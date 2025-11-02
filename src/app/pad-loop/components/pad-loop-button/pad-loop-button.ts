@@ -1,15 +1,18 @@
-import { AfterViewInit, Component, effect, inject, Input, signal, ViewChild } from '@angular/core';
-import { IPadLoop } from '../../interfaces/pad-loop.interface';
+import { AfterViewInit, Component, effect, inject, Input, OnInit, signal, ViewChild } from '@angular/core';
+import { LucideAngularModule } from 'lucide-angular';
+
 import { UiService } from '../../../ui/services/ui.service';
-import { LucideAngularModule, LucideSettings, LucideTrash, LucideLoaderCircle, LucidePlay } from 'lucide-angular';
-import { Button } from "../../../ui/components/button/button";
 import { DialogService } from '../../../ui/services/dialog.service';
-import { PadLoopForm } from '../pad-loop-form/pad-loop-form';
-import { SessionService } from '../../../session/services/session.service';
+import { Button } from "../../../ui/components/button/button";
+
 import { YoutubePlayer } from '../../../ui/components/youtube-player/youtube-player';
-import { PadLoopState } from '../../enums/pad-loop-status.enum';
 import { YoutubePlayerStatus } from '../../../ui/enums/youtube-player-status.enum';
+
+import { SessionService } from '../../../session/services/session.service';
+
+import { IPadLoop } from '../../interfaces/pad-loop.interface';
 import { PadLoopMode } from '../../enums/pad-loop-mode.enum';
+import { PadLoopForm } from '../pad-loop-form/pad-loop-form';
 
 @Component({
     selector: 'app-pad-loop-button',
@@ -17,7 +20,7 @@ import { PadLoopMode } from '../../enums/pad-loop-mode.enum';
     templateUrl: './pad-loop-button.html',
     styleUrl: './pad-loop-button.scss',
 })
-export class PadLoopButton implements AfterViewInit {
+export class PadLoopButton implements OnInit, AfterViewInit {
     private dialogService = inject(DialogService);
 
     private uiService = inject(UiService);
@@ -28,15 +31,18 @@ export class PadLoopButton implements AfterViewInit {
 
     @ViewChild('player') youtubePlayer?: YoutubePlayer;
 
-    // public state = signal<PadLoopState>(PadLoopState.CONFIGURING);
+    // public LucideSettings = LucideSettings;
 
-    public LucideSettings = LucideSettings;
+    // public LucideTrash = LucideTrash;
 
-    public LucideTrash = LucideTrash;
+    // public LucideLoaderCircle = LucideLoaderCircle;
 
-    public LucideLoaderCircle = LucideLoaderCircle;
+    // public CircleFadingArrowUp = CircleFadingArrowUp;
 
-    public LucidePlay = LucidePlay;
+    public icon = signal<string>('LucideLoaderCircle');
+
+    public type = signal<string>('LucideInfinity');
+
 
     @Input() public padLoop?: IPadLoop;
 
@@ -92,7 +98,47 @@ export class PadLoopButton implements AfterViewInit {
                     break;
             }
             this.last = keys.has(key);
+
+            // Update youtubePlayer state
+            const icons = {
+                [YoutubePlayerStatus.UNSTARTED]: 'LucidePlay',
+                [YoutubePlayerStatus.PLAYING]: 'LucidePause',
+                [YoutubePlayerStatus.PAUSED]: 'LucidePlay',
+                [YoutubePlayerStatus.ENDED]: 'LucidePlay',
+                [YoutubePlayerStatus.BUFFERING]: 'LucideLoaderCircle',
+                [YoutubePlayerStatus.CUED]: 'LucidePlay',
+                [YoutubePlayerStatus.READY]: 'LucidePlay',
+            };
+    
+            this.icon.set(icons[state]);
         });
+    }
+
+    private updateType(padLoop?: IPadLoop) {
+
+        if (!padLoop) {
+            return;
+        }
+
+        const { mode } = padLoop;
+
+        switch (mode) {
+            case PadLoopMode.ONE_SHOT:
+                this.type.set('ArrowRightFromLine');
+                break;
+            case PadLoopMode.GATE:
+                this.type.set('CircleFadingArrowUp');
+                break;
+            case PadLoopMode.LOOP:
+                this.type.set('LucideInfinity');
+                break;
+            default:
+                break;
+        }
+    }
+
+    public ngOnInit() {
+        this.updateType(this.padLoop);
     }
 
     public async ngAfterViewInit() {
@@ -104,6 +150,7 @@ export class PadLoopButton implements AfterViewInit {
 
         try {
             await this.youtubePlayer.controls.load(youtubeId, start, end);
+            this.icon.set('LucidePlay');
         } catch (e) { }
     }
 
@@ -124,6 +171,8 @@ export class PadLoopButton implements AfterViewInit {
         const updated = { ...activeSession, padLoops: activeSession.padLoops.map(loop => loop.uuid === padLoop.uuid ? padLoop : loop) };
         // Update session
         this.sessionService.update(updated);
+        // Update type
+        this.updateType(padLoop);
     }
 
     public remove() {
@@ -143,22 +192,5 @@ export class PadLoopButton implements AfterViewInit {
         const updated = { ...activeSession, padLoops: activeSession.padLoops.filter(loop => loop.uuid !== uuid) };
         // Update session
         this.sessionService.update(updated);
-    }
-
-    public toggle() {
-        if (!this.youtubePlayer) {
-            return;
-        }
-
-        const keys = this.uiService.keys();
-        const state = this.youtubePlayer.state();
-        const playing = state === YoutubePlayerStatus.PLAYING;
-
-        if (playing) {
-            this.youtubePlayer.controls.pause();
-            return;
-        }
-
-        this.youtubePlayer.controls.play();
     }
 }

@@ -31,12 +31,32 @@
 
     &__content {
         button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width: 100%;
             height: 85px;
+
+            & .loading {
+                display: block;
+                animation: spin 1s linear infinite;
+                height: 24px;
+                width: 24px;
+            }
         }
 
         app-youtube-player {
             display: none;
+        }
+    }
+
+    &__information {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+
+        .gate {
+            transform: rotate(90deg);
         }
     }
 }

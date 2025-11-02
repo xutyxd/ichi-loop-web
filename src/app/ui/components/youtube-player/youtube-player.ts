@@ -83,6 +83,7 @@ export class YoutubePlayer implements AfterViewInit {
     }
 
     private onPlayerReady() {
+        this.State.set(YoutubePlayerStatus.READY);
         this.onReady.emit();
     }
 
