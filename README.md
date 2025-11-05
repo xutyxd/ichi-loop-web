@@ -57,12 +57,6 @@ The core looping mechanism works, but several challenges remain before it could 
 
 ---
 
-## 📜 License
-
-This project is shared as a **proof-of-concept** for educational and experimental purposes.  
-
----
-
 
 ### 💡 Author’s Note
 

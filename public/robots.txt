@@ -1,0 +1,12 @@
+# robots.txt for https://ichi-loop.app
+
+User-agent: *
+Allow: /
+
+# Prevent indexing of build and config files
+Disallow: /assets/
+Disallow: /environments/
+Disallow: /node_modules/
+
+# Sitemap reference
+Sitemap: https://ichi-loop.app/sitemap.xml
