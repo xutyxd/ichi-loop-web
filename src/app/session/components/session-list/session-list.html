@@ -1,15 +1,28 @@
 <aside class="sessions">
-    <section class="sessions_header">
+    <section class="sessions__header">
         <h1>{{ 'Sessions' | uppercase }}</h1>
     </section>
     <section>
         <button app-button outlined (click)="add()">+ ADD SESSION</button>
     </section>
-    <section>
+    <section class="sessions__container">
         @for (session of sessions(); track $index) {
-            <div class="session" (click)="select(session)" (keyup.enter)="select(session)">
-                <h2>{{ session.title | uppercase}}</h2>
+            <div class="sessions__session" [class.active]="session.active" (click)="select(session)" (keyup.enter)="select(session)">
+                <span>{{ session.title | uppercase}}</span>
+                <div class="sessions__controls">
+                    @if(session.active) {
+                        <div class="sessions__active-indicator"></div>
+                    }
+                    <button app-button outlined small (click)="remove(session)">
+                        <lucide-icon name="LucideTrash" size="16"></lucide-icon>
+                    </button>
+                </div>
+                
             </div>
         }
+    </section>
+    <section class="sessions__footer">
+        <span> Made with ☕ by </span>
+        <a href="https://github.com/xutyxd" target="_blank">Xuty</a>
     </section>
 </aside>

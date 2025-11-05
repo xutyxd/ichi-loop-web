@@ -1,8 +1,11 @@
 import { ApplicationRef, createComponent, createEnvironmentInjector, EnvironmentInjector, inject, Injectable, Injector, Type } from '@angular/core';
-import { Dialog } from '../components/dialog/dialog/dialog';
+
+import { KeyboardService } from './keyboard.service';
+
 import { DIALOG_DATA } from '../tokens/dialog.tokens';
 import { DialogRef } from '../classes/dialog-ref.class';
-import { UiService } from './ui.service';
+import { Dialog } from '../components/dialog/dialog/dialog';
+import { DialogBoolean } from '../components/dialog/dialog-boolean/dialog-boolean';
 
 @Injectable({
     providedIn: 'root'
@@ -11,10 +14,10 @@ export class DialogService {
     private appRef = inject(ApplicationRef);
     private envInjector = inject(EnvironmentInjector);
 
-    private uiService = inject(UiService);
+    private keyboardService = inject(KeyboardService);
 
     public open<T, R = unknown>(component: Type<T>, data?: unknown): Promise<R | undefined> {
-        this.uiService.disableKeys();
+        this.keyboardService.keys.disable();
         // Create a new dialog component to host component inside
         const hostRef = createComponent(Dialog, {
             environmentInjector: this.envInjector
@@ -61,13 +64,13 @@ export class DialogService {
             event?.preventDefault();
 
             const value = (event?.target as HTMLDialogElement | undefined)?.returnValue;
-            
+
             let formatted = value;
             try {
                 formatted = JSON.parse(formatted as string).data;
             } catch { }
 
-            this.uiService.enableKeys();
+            this.keyboardService.keys.enable();
             closeFn(formatted as R | undefined);
         };
 
@@ -75,5 +78,14 @@ export class DialogService {
         dialogEl.addEventListener('cancel', close, { once: true });
 
         return resultPromise;
+    }
+
+    public async ask(title: string, message: string) {
+        const response = await this.open(DialogBoolean, {
+            title,
+            message,
+        });
+
+        return Boolean(response);
     }
 }

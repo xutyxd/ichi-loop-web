@@ -1,0 +1,14 @@
+<section class="dialog" (keyup.enter)="confirm()">
+    <section class="dialog__header">
+        <span class="dialog__title">{{ ask?.title }}</span>
+    </section>
+    
+    <section class="dialog__body">
+        <p class="dialog__message">{{ ask?.message }}</p>
+    </section>
+    
+    <section class="dialog__footer">
+        <button app-button outlined (click)="cancel()">Cancel</button>
+        <button app-button filled expanded (click)="confirm()">Confirm</button>
+    </section>
+</section>

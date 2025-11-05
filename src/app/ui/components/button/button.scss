@@ -62,3 +62,14 @@
     pointer-events: none;
     opacity: 0.75;
 }
+
+:host:focus {
+    box-shadow: 0 0 5px 1px var(--accent-hover);
+    transition: box-shadow 0.2s ease;
+    border-color: var(--accent);
+    outline: none;
+
+    &::after {
+        background-color: var(--accent-hover);
+    }
+}

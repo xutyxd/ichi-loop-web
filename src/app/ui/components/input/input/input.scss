@@ -9,8 +9,12 @@
     font-size: 14px;
 
     &:focus {
-        outline-color: color-mix(in oklab, var(--accent) 50%, transparent);
+        // outline-color: color-mix(in oklab, var(--accent) 50%, transparent);
+        // border-color: var(--accent);
+        box-shadow: 0 0 5px 1px var(--accent-hover);
+        transition: box-shadow 0.2s ease;
         border-color: var(--accent);
+        outline: none;
     }
 
     &select {

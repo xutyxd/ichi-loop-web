@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, effect, inject, Input, OnInit, signal, ViewChild } from '@angular/core';
 import { LucideAngularModule } from 'lucide-angular';
 
-import { UiService } from '../../../ui/services/ui.service';
 import { DialogService } from '../../../ui/services/dialog.service';
 import { Button } from "../../../ui/components/button/button";
 
@@ -13,6 +12,7 @@ import { SessionService } from '../../../session/services/session.service';
 import { IPadLoop } from '../../interfaces/pad-loop.interface';
 import { PadLoopMode } from '../../enums/pad-loop-mode.enum';
 import { PadLoopForm } from '../pad-loop-form/pad-loop-form';
+import { KeyboardService } from '../../../ui/services/keyboard.service';
 
 @Component({
     selector: 'app-pad-loop-button',
@@ -23,21 +23,13 @@ import { PadLoopForm } from '../pad-loop-form/pad-loop-form';
 export class PadLoopButton implements OnInit, AfterViewInit {
     private dialogService = inject(DialogService);
 
-    private uiService = inject(UiService);
+    private keyboardService = inject(KeyboardService);
 
     private sessionService = inject(SessionService);
 
     private last = false;
 
     @ViewChild('player') youtubePlayer?: YoutubePlayer;
-
-    // public LucideSettings = LucideSettings;
-
-    // public LucideTrash = LucideTrash;
-
-    // public LucideLoaderCircle = LucideLoaderCircle;
-
-    // public CircleFadingArrowUp = CircleFadingArrowUp;
 
     public icon = signal<string>('LucideLoaderCircle');
 
@@ -48,7 +40,7 @@ export class PadLoopButton implements OnInit, AfterViewInit {
 
     constructor() {
         effect(() => {
-            const keys = this.uiService.keys();
+            const keys = this.keyboardService.keys.pressed();
 
             if (!this.youtubePlayer || !this.padLoop) {
                 return;
@@ -151,14 +143,7 @@ export class PadLoopButton implements OnInit, AfterViewInit {
         try {
             // Load youtube player
             await this.youtubePlayer.controls.load(youtubeId, start, end);
-            // // Force buffering
-            // // Play to buffer
-            // await this.youtubePlayer.controls.play();
-            // // Seek to start
-            // await this.youtubePlayer.controls.seek(start);
-            // // Pause
-            // await this.youtubePlayer.controls.pause();
-            // Set icon
+            // Set icon as play
             this.icon.set('LucidePlay');
         } catch (e) { }
     }

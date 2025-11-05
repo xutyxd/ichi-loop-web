@@ -1,0 +1,24 @@
+
+.dialog {
+    
+    &__header {
+        margin-top: calc(0px - var(--padding));
+        padding: var(--padding) 0;
+    }
+
+    &__title {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    &__body {
+        margin-top: var(--default-size);
+    }
+
+    &__footer {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: var(--gap);
+    }
+}

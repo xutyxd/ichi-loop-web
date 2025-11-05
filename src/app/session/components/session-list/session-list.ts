@@ -1,22 +1,28 @@
 import { Component, inject } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
+import { Router } from '@angular/router';
 
+import { LucideAngularModule } from "lucide-angular";
+
+import { DialogService } from '../../../ui/services/dialog.service';
 import { Button } from '../../../ui/components/button/button';
 
 import { SessionService } from '../../services/session.service';
 import { ISession } from '../../interfaces/session.interface';
-import { Router } from '@angular/router';
+
+
 
 
 
 @Component({
   selector: 'app-session-list',
-  imports: [UpperCasePipe, Button],
+  imports: [UpperCasePipe, Button, LucideAngularModule],
   templateUrl: './session-list.html',
   styleUrl: './session-list.scss',
 })
 export class SessionList {
     private router: Router = inject(Router);
+    private dialogService: DialogService = inject(DialogService);
     private sessionService: SessionService = inject(SessionService);
 
     public sessions = this.sessionService.sessions;
@@ -41,7 +47,13 @@ export class SessionList {
         this.router.navigate([`/${session.uuid}`]);
     }
 
-    public remove(session: ISession) {
+    public async remove(session: ISession) {
+        const response = await this.dialogService.ask('Confirm', 'Are you sure you want to delete this session?');
+        
+        if (!response) {
+            return;
+        }
+
         this.sessionService.remove(session);
     }
 }

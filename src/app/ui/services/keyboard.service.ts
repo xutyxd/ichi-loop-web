@@ -2,9 +2,9 @@ import { computed, Injectable, NgZone, signal } from '@angular/core';
 import { SpecialKeys } from '../enums/special-keys.enum';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
-export class UiService {
+export class KeyboardService {
     private Keys = {
         special: new Set(Object.values(SpecialKeys)),
         pressed: signal<Set<string>>(new Set()),
@@ -18,7 +18,7 @@ export class UiService {
                 event.stopPropagation();
                 event.preventDefault();
             }
-            
+
             // Get code
             const { code } = event;
             // Get current keys
@@ -31,7 +31,6 @@ export class UiService {
             current.add(code);
             // Set new keys
             this.Keys.pressed.set(current);
-            console.log('pressed', current);
         },
         remove: (event: KeyboardEvent) => {
             // // Stop propagation
@@ -51,8 +50,6 @@ export class UiService {
             this.Keys.pressed.set(new Set());
         }
     };
-    // Expose keys as computed avoiding writable signal
-    public keys = computed(() => this.Keys.pressed());
 
     constructor(ngZone: NgZone) {
         // Avoid zone for performance
@@ -79,11 +76,10 @@ export class UiService {
         });
     }
 
-    public disableKeys() {
-        this.Keys.disable = true;
-    }
 
-    public enableKeys() {
-        this.Keys.disable = false;
+    public keys = {
+        pressed: computed(() => this.Keys.pressed()),
+        enable: () => this.Keys.disable = false,
+        disable: () => this.Keys.disable = true,
     }
 }
