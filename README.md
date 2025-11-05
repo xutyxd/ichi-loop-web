@@ -1,59 +1,69 @@
-# IchiLoop
+# <div style="display: flex; align-items: center; gap: 8px"><img src="./public/favicon.ico" alt="IchiLoop logo" height="38"> IchiLoop (壱Loop)</div>
+*A YouTube Loop Pad Experiment*
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.2.1.
+---
+## 🌐 Live Demo
 
-## Development server
+🚀 **Try it now:** [https://ichi-loop.app](https://ichi-loop.app)
 
-To start a local development server, run:
+## 🎧 Overview
 
-```bash
-ng serve
-```
+**IchiLoop (壱Loop)** is an experimental proof-of-concept project that explores the feasibility of using the **YouTube IFrame Player API** to create a functional **audio loop pad**.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+The primary goal was to determine whether **seamless, low-latency audio loops** could be achieved by controlling a hidden YouTube player through JavaScript.
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🧠 Core Concept
 
-```bash
-ng generate component component-name
-```
+The application allows a user to:
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- Load a YouTube video by its URL  
+- Define a precise `startTime` and `endTime` for a segment of the video  
+- Trigger **Play**, which starts the video at `startTime`  
+- Define a **Loop** behavior, which plays the video indefinitely  
+- Define a **Gate** behavior, which plays the video only while the pad is held down
+- Define a **One-Shot** behavior, which triggers the video once from the `startTime` and stops after the `endTime`
 
-```bash
-ng generate --help
-```
+By leveraging the YouTube API, the application can seamlessly control the playback of a video and ensure that the looped segment is consistent and precise.
 
-## Building
+---
 
-To build the project run:
+## 🧩 Basic Features
 
-```bash
-ng build
-```
+- **Session Management** – Maintain a list of sessions (projects)  
+- **Pad Grid** – A grid of pads for the active session  
+- **Loop Configuration** – Add a YouTube URL, title, start time, and end time  
+- **Playback Engine** – Core logic that toggles play/pause and enforces looping behavior  
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+---
 
-## Running unit tests
+## 🛠️ Tech Stack
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+| Technology | Description |
+|-------------|-------------|
+| [![Angular](https://img.shields.io/badge/Angular-v20-red?logo=angular)](https://angular.dev/) | Frontend framework used to build the SPA |
+| [![YouTube IFrame API](https://img.shields.io/badge/YouTube-IFrame%20API-lightgrey?logo=youtube)](https://developers.google.com/youtube/iframe_api_reference) | Core “audio engine” for video playback and looping |
 
-```bash
-ng test
-```
+---
 
-## Running end-to-end tests
+## 🚧 Status: Proof-of-Concept
 
-For end-to-end (e2e) testing, run:
+This is an **experimental build** and not a full-fledged application.  
+The core looping mechanism works, but several challenges remain before it could be production-ready:
 
-```bash
-ng e2e
-```
+- Mobile browser limitations  
+- API latency  
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+---
 
-## Additional Resources
+## 📜 License
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+This project is shared as a **proof-of-concept** for educational and experimental purposes.  
+
+---
+
+
+### 💡 Author’s Note
+
+This project was built as an experiment to explore creative uses of the YouTube API and modern frontend frameworks. Feedback, forks, and contributions are welcome!
