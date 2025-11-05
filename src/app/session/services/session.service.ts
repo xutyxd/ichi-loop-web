@@ -10,11 +10,9 @@ export class SessionService {
 
     private Sessions;
 
-    private Active = signal<ISession | undefined>(undefined);
-
     public sessions = computed(() => this.Sessions());
 
-    public active = computed(() => this.Active());
+    public active = computed(() => this.sessions().find(s => s.active));
 
     public first = computed<ISession | undefined>(() => this.Sessions()[0]);
 
@@ -42,11 +40,18 @@ export class SessionService {
     }
 
     public select(session: ISession) {
-        this.Active.set(session);
+        this.Sessions.update((sessions) => {
+            return sessions.map((s) =>{
+                s.active = s.uuid === session.uuid;
+                return s;
+            });
+        });
     }
 
     public update(session: ISession) {
-        this.Sessions.update((sessions) => sessions.map(s => s.uuid === session.uuid ? session : s));
+        this.Sessions.update((sessions) => {
+           return sessions.map(s => s.uuid === session.uuid ? session : s)
+        });
     }
 
     public remove(session: ISession) {

@@ -4,4 +4,5 @@ export interface ISession {
     uuid: string;
     title: string;
     padLoops: IPadLoop[];
+    active: boolean;
 }

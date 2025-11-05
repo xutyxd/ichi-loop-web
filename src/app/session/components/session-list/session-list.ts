@@ -29,7 +29,8 @@ export class SessionList {
         const session: ISession = {
             uuid: crypto.randomUUID(),
             title: `Session ${length + 1}`,
-            padLoops: []
+            padLoops: [],
+            active: true,
         };
 
         this.sessionService.add(session);

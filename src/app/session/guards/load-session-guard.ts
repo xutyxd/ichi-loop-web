@@ -23,7 +23,7 @@ export const loadSessionGuard: CanActivateFn = (route, state) => {
         return true;
     }
     // Create a new session
-    sessionService.add({ uuid: crypto.randomUUID(), title: 'Session 1', padLoops: [] });
+    sessionService.add({ uuid: crypto.randomUUID(), title: 'Session 1', padLoops: [], active: true });
     // Return true to allow the route to be activated
     return true;
 };
